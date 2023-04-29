@@ -5,4 +5,5 @@ type Nasabah struct {
 	Nik        string `json:"nik"`
 	NoHp       string `json:"no_hp"`
 	NoRekening string `json:"no_rekening"`
+	CreatedAt  string `json:"created_at"`
 }
