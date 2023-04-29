@@ -8,14 +8,34 @@ import (
 )
 
 type NasabahController struct {
-	NasabahService services.NasabahService
+	NasabahService  services.NasabahService
+	RekeningService services.RekeningService
 }
 
 func (this *NasabahController) Daftar(c *fiber.Ctx) error {
-	// todo: parse request, send into to nasabah service
-	if err := this.NasabahService.Daftar(&models.Nasabah{}); err != nil {
+	var nasabah models.Nasabah
+	if err := c.BodyParser(&nasabah); err != nil {
 		return err
 	}
-	// todo return json
-	return c.JSON(make(map[string]bool))
+
+	nasabahID, err := this.NasabahService.Daftar(nasabah)
+	if err != nil {
+		var result models.DaftarResponseError
+		result.Remark = err.Error()
+		c.Status(400)
+		return c.JSON(result)
+	}
+
+	noRekening, err := this.RekeningService.Daftar(nasabahID)
+	if err != nil {
+		var result models.DaftarResponseError
+		result.Remark = err.Error()
+		c.Status(400)
+		return c.JSON(result)
+	}
+
+	var result models.DaftarResponseOk
+	result.NoRekening = noRekening
+	c.Status(200)
+	return c.JSON(result)
 }
