@@ -4,20 +4,22 @@ import (
 	// "project/app/controllers"
 	// "project/app/services"
 
-	"database/sql"
 	"tabungan-api/app/controllers"
 	"tabungan-api/app/services"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-func SetupRoutes(app *fiber.App, db *sql.DB) {
+func SetupRoutes(app *fiber.App, db *pgxpool.Pool) {
 	// Initialize services
 	nasabahService := services.NewNasabahService(db)
+	rekeningService := services.NewRekeningService(db)
 
 	// Initialize controllers
 	nasabahController := &controllers.NasabahController{
-		NasabahService: nasabahService,
+		NasabahService:  nasabahService,
+		RekeningService: rekeningService,
 	}
 
 	// Set up routes
