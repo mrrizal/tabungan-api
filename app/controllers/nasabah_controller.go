@@ -20,7 +20,7 @@ func (this *NasabahController) Daftar(c *fiber.Ctx) error {
 
 	nasabahID, err := this.NasabahService.Daftar(nasabah)
 	if err != nil {
-		var result models.DaftarResponseError
+		var result models.ErrorResponse
 		result.Remark = err.Error()
 		c.Status(400)
 		return c.JSON(result)
@@ -28,7 +28,7 @@ func (this *NasabahController) Daftar(c *fiber.Ctx) error {
 
 	noRekening, err := this.RekeningService.Daftar(nasabahID)
 	if err != nil {
-		var result models.DaftarResponseError
+		var result models.ErrorResponse
 		result.Remark = err.Error()
 		c.Status(400)
 		return c.JSON(result)
