@@ -15,7 +15,8 @@ CREATE TABLE "rekening" (
   "no_rekening" varchar(10) PRIMARY KEY,
   "nasabah_id" int,
   "saldo" float NOT NULL,
-  "created_at" timestamp DEFAULT (now())
+  "created_at" timestamp DEFAULT (now()),
+  "updated_at" timestamp
 );
 
 CREATE TABLE "transaksi" (

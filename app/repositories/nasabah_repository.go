@@ -10,7 +10,7 @@ import (
 
 type NasabahRepository interface {
 	Daftar(nasabah models.Nasabah) (int, error)
-	IsExists(field, value string) (bool, error)
+	IsExists(field, value string) bool
 }
 
 type nasabahRepository struct {
@@ -41,13 +41,13 @@ func (this *nasabahRepository) Daftar(nasabah models.Nasabah) (int, error) {
 	return nasabahID, nil
 }
 
-func (this *nasabahRepository) IsExists(field, value string) (bool, error) {
+func (this *nasabahRepository) IsExists(field, value string) bool {
 	var nasabahID int
 
 	sqlStmt := fmt.Sprintf("SELECT id FROM nasabah WHERE %s = '%s'", field, value)
 	err := this.db.QueryRow(context.Background(), sqlStmt).Scan(&nasabahID)
 	if err != nil {
-		return false, nil
+		return false
 	}
-	return nasabahID != 0, nil
+	return nasabahID != 0
 }

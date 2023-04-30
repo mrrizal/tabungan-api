@@ -19,20 +19,12 @@ func NewNasabahService(db *pgxpool.Pool) NasabahService {
 }
 
 func (this *NasabahService) Daftar(nasabah models.Nasabah) (int, error) {
-	nikIsExists, err := this.NasabahRepository.IsExists("nik", nasabah.Nik)
-	if err != nil {
-		return 0, err
-	}
-
+	nikIsExists := this.NasabahRepository.IsExists("nik", nasabah.Nik)
 	if nikIsExists {
 		return 0, errors.New("nik already exists")
 	}
 
-	noHpIsExists, err := this.NasabahRepository.IsExists("no_hp", nasabah.NoHp)
-	if err != nil {
-		return 0, err
-	}
-
+	noHpIsExists := this.NasabahRepository.IsExists("no_hp", nasabah.NoHp)
 	if noHpIsExists {
 		return 0, errors.New("no_hp already exists")
 	}

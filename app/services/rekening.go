@@ -1,6 +1,8 @@
 package services
 
 import (
+	"errors"
+	"tabungan-api/app/models"
 	"tabungan-api/app/repositories"
 	"tabungan-api/utils"
 
@@ -25,4 +27,49 @@ func (this *RekeningService) Daftar(nasabahID int) (string, error) {
 	}
 
 	return noRekening, nil
+}
+
+func (this *RekeningService) IsExists(nomorRekening string) bool {
+	return this.RekeningRepository.IsExists(nomorRekening)
+}
+
+func (this *RekeningService) Tabung(tabungRequest models.TransaksiRequest) (float64, error) {
+	if !this.RekeningRepository.IsExists(tabungRequest.NoRekening) {
+		return 0, errors.New("no rekening doesn't exists")
+	}
+
+	saldo, err := this.RekeningRepository.GetSaldo(tabungRequest.NoRekening)
+	if err != nil {
+		return 0, err
+	}
+
+	tabungRequest.CurrentSaldo = saldo
+
+	return this.RekeningRepository.Transaksi(tabungRequest)
+}
+
+func (this *RekeningService) Tarik(tabungRequest models.TransaksiRequest) (float64, error) {
+	if !this.RekeningRepository.IsExists(tabungRequest.NoRekening) {
+		return 0, errors.New("no rekening doesn't exists")
+	}
+
+	saldo, err := this.RekeningRepository.GetSaldo(tabungRequest.NoRekening)
+	if err != nil {
+		return 0, err
+	}
+
+	tabungRequest.CurrentSaldo = saldo
+
+	if tabungRequest.CurrentSaldo < tabungRequest.Nominal {
+		return 0, errors.New("saldo tidak mencukupi")
+	}
+
+	return this.RekeningRepository.Transaksi(tabungRequest)
+}
+
+func (this *RekeningService) GetSaldo(noRekening string) (float64, error) {
+	if !this.RekeningRepository.IsExists(noRekening) {
+		return 0, errors.New("no rekening doesn't exists")
+	}
+	return this.RekeningRepository.GetSaldo(noRekening)
 }
