@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 type DaftarResponseOk struct {
 	NoRekening string `json:"no_rekening"`
 }
@@ -30,4 +32,14 @@ type TransaksiRequest struct {
 
 type TransaksiResponseOk struct {
 	Saldo float64 `json:"saldo"`
+}
+
+type MutasiTransaksi struct {
+	Waktu         time.Time `json:"waktu"`
+	KodeTransaksi string    `json:"kode_transaksi"`
+	Nominal       float64   `json:"nominal"`
+}
+
+type MutasiResp struct {
+	Results []MutasiTransaksi `json:"results"`
 }
