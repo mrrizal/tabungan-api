@@ -22,7 +22,11 @@ func SetupRoutes(app *fiber.App, db *pgxpool.Pool) {
 		RekeningService: rekeningService,
 	}
 
-	rekeningController := &controllers.TransaksiController{
+	transaksiController := &controllers.TransaksiController{
+		RekeningService: rekeningService,
+	}
+
+	rekeningController := &controllers.RekeningController{
 		RekeningService: rekeningService,
 	}
 
@@ -30,6 +34,7 @@ func SetupRoutes(app *fiber.App, db *pgxpool.Pool) {
 	api := app.Group("/api")
 	v1 := api.Group("/v1")
 	v1.Post("/daftar/", nasabahController.Daftar)
-	v1.Post("/tabung/", rekeningController.Tabung)
-	v1.Post("/tarik/", rekeningController.Tarik)
+	v1.Post("/tabung/", transaksiController.Tabung)
+	v1.Post("/tarik/", transaksiController.Tarik)
+	v1.Get("/saldo/:no_rekening", rekeningController.Saldo)
 }

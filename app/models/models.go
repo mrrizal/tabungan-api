@@ -28,6 +28,6 @@ type TransaksiRequest struct {
 	Type         string  `json:"type"`
 }
 
-type TabungResponseOk struct {
+type TransaksiResponseOk struct {
 	Saldo float64 `json:"saldo"`
 }

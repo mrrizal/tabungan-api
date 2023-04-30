@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"tabungan-api/app/models"
+	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -65,8 +66,8 @@ func (this *rekeningRepository) Transaksi(transaksiRequest models.TransaksiReque
 		saldo = transaksiRequest.CurrentSaldo - transaksiRequest.Nominal
 	}
 
-	sqlStmt := "UPDATE rekening SET saldo = $1 WHERE no_rekening = $2"
-	_, err := this.db.Exec(context.Background(), sqlStmt, saldo, transaksiRequest.NoRekening)
+	sqlStmt := "UPDATE rekening SET saldo = $1, updated_at = $2 WHERE no_rekening = $3"
+	_, err := this.db.Exec(context.Background(), sqlStmt, saldo, time.Now(), transaksiRequest.NoRekening)
 	if err != nil {
 		return 0, err
 	}

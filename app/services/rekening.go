@@ -66,3 +66,10 @@ func (this *RekeningService) Tarik(tabungRequest models.TransaksiRequest) (float
 
 	return this.RekeningRepository.Transaksi(tabungRequest)
 }
+
+func (this *RekeningService) GetSaldo(noRekening string) (float64, error) {
+	if !this.RekeningRepository.IsExists(noRekening) {
+		return 0, errors.New("no rekening doesn't exists")
+	}
+	return this.RekeningRepository.GetSaldo(noRekening)
+}

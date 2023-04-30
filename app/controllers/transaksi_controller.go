@@ -26,7 +26,7 @@ func (this *TransaksiController) Tabung(c *fiber.Ctx) error {
 		return c.JSON(result)
 	}
 
-	var resp models.TabungResponseOk
+	var resp models.TransaksiResponseOk
 	resp.Saldo = saldo
 	c.Status(200)
 	return c.JSON(resp)
@@ -47,7 +47,7 @@ func (this *TransaksiController) Tarik(c *fiber.Ctx) error {
 		return c.JSON(result)
 	}
 
-	var resp models.TabungResponseOk
+	var resp models.TransaksiResponseOk
 	resp.Saldo = saldo
 	c.Status(200)
 	return c.JSON(resp)
