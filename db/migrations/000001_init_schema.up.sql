@@ -1,6 +1,6 @@
 CREATE TYPE "kodetransaksi" AS ENUM (
-  'c',
-  'd'
+  'C',
+  'D'
 );
 
 CREATE TABLE "nasabah" (
