@@ -3,7 +3,10 @@ package utils
 import (
 	"fmt"
 	"math/rand"
+	"tabungan-api/app/models"
 	"time"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 func GenerateAccountNumber(length int) string {
@@ -20,4 +23,11 @@ func pow(x, y int) int {
 		p *= x
 	}
 	return p
+}
+
+func ErrorResp(c *fiber.Ctx, message string) error {
+	var result models.ErrorResponse
+	result.Remark = message
+	c.Status(400)
+	return c.JSON(result)
 }

@@ -3,6 +3,7 @@ package controllers
 import (
 	"tabungan-api/app/models"
 	"tabungan-api/app/services"
+	"tabungan-api/utils"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -15,10 +16,7 @@ func (this *RekeningController) Saldo(c *fiber.Ctx) error {
 	noRekening := c.Params("no_rekening")
 	saldo, err := this.RekeningService.GetSaldo(noRekening)
 	if err != nil {
-		var result models.ErrorResponse
-		result.Remark = err.Error()
-		c.Status(400)
-		return c.JSON(result)
+		return utils.ErrorResp(c, err.Error())
 	}
 
 	var result models.TransaksiResponseOk

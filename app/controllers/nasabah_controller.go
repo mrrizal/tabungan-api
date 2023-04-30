@@ -3,6 +3,7 @@ package controllers
 import (
 	"tabungan-api/app/models"
 	"tabungan-api/app/services"
+	"tabungan-api/utils"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -20,18 +21,12 @@ func (this *NasabahController) Daftar(c *fiber.Ctx) error {
 
 	nasabahID, err := this.NasabahService.Daftar(nasabah)
 	if err != nil {
-		var result models.ErrorResponse
-		result.Remark = err.Error()
-		c.Status(400)
-		return c.JSON(result)
+		return utils.ErrorResp(c, err.Error())
 	}
 
 	noRekening, err := this.RekeningService.Daftar(nasabahID)
 	if err != nil {
-		var result models.ErrorResponse
-		result.Remark = err.Error()
-		c.Status(400)
-		return c.JSON(result)
+		return utils.ErrorResp(c, err.Error())
 	}
 
 	var result models.DaftarResponseOk

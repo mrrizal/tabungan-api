@@ -3,6 +3,7 @@ package controllers
 import (
 	"tabungan-api/app/models"
 	"tabungan-api/app/services"
+	"tabungan-api/utils"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -21,17 +22,11 @@ func (this *TransaksiController) Tabung(c *fiber.Ctx) error {
 
 	saldo, err := this.RekeningService.Tabung(request)
 	if err != nil {
-		var result models.ErrorResponse
-		result.Remark = err.Error()
-		c.Status(400)
-		return c.JSON(result)
+		return utils.ErrorResp(c, err.Error())
 	}
 
 	if err := this.TransaksiService.Transaksi(request); err != nil {
-		var result models.ErrorResponse
-		result.Remark = err.Error()
-		c.Status(400)
-		return c.JSON(result)
+		return utils.ErrorResp(c, err.Error())
 	}
 
 	var resp models.TransaksiResponseOk
@@ -49,17 +44,11 @@ func (this *TransaksiController) Tarik(c *fiber.Ctx) error {
 
 	saldo, err := this.RekeningService.Tarik(request)
 	if err != nil {
-		var result models.ErrorResponse
-		result.Remark = err.Error()
-		c.Status(400)
-		return c.JSON(result)
+		return utils.ErrorResp(c, err.Error())
 	}
 
 	if err := this.TransaksiService.Transaksi(request); err != nil {
-		var result models.ErrorResponse
-		result.Remark = err.Error()
-		c.Status(400)
-		return c.JSON(result)
+		return utils.ErrorResp(c, err.Error())
 	}
 
 	var resp models.TransaksiResponseOk
@@ -71,18 +60,12 @@ func (this *TransaksiController) Tarik(c *fiber.Ctx) error {
 func (this *TransaksiController) Mutasi(c *fiber.Ctx) error {
 	noRekening := c.Params("no_rekening")
 	if !this.RekeningService.IsExists(noRekening) {
-		var result models.ErrorResponse
-		result.Remark = "nomor rekening doesn't exists"
-		c.Status(400)
-		return c.JSON(result)
+		return utils.ErrorResp(c, "nomor rekening doesn't exists")
 	}
 
 	mutasiRekening, err := this.TransaksiService.Mutasi(noRekening)
 	if err != nil {
-		var result models.ErrorResponse
-		result.Remark = err.Error()
-		c.Status(400)
-		return c.JSON(result)
+		return utils.ErrorResp(c, err.Error())
 	}
 
 	var result models.MutasiResp
